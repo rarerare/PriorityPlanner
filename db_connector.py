@@ -17,3 +17,23 @@ def add_user(email, password):
     cur.execute(addUser, (email,password))
     cnx.commit()
     cnx.close()
+
+def add_rule(descrip):
+    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    addRule=("INSERT INTO rule (descrip) VALUES(%s)")
+    cur=cnx.cursor()
+    rule_data=(descrip,)
+    cur.execute(addRule, rule_data)
+    cnx.commit()
+    cnx.close()
+
+def get_rule():
+    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cur=cnx.cursor()
+    query="SELECT * FROM rule"
+    cur.execute(query)
+    rules=[]
+    for(id, descrip, breach_cnt) in cur:
+        rules.append({'id':id, 'descrip': descrip, 'breach_cnt':breach_cnt})
+    cnx.close()
+    return rules

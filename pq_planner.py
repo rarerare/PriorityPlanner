@@ -17,6 +17,16 @@ class Task:
         , 'estimate_sec':self.estimate_sec, 'done':self.done \
         ,'create_date':self.create_date.strftime('%Y-%m-%d %H:%M:%S'), 'user_id':self.user_id}
 
+class Rule(object):
+    """docstring for Rule"""
+    def __init__(self, descrip):
+        self.descrip=descrip
+        self.breachCnt=0
+
+
+
+        
+
 
         
         
