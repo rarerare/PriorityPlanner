@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="static/js/jquery-3.3.1.js"></script>
+    <script src="static/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="static/js/addRule.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/jquery-ui-1.12.1.custom/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <title>thy name is man</title>
+</head>
+<body>
+    
+    {% for rule in rules%}
+    <div class="rule-div">
+        <hr>
+        {{rule.descrip}}<br> 
+        Created: {{rule.create_date}}
+        <br>
+        Expire: {{rule.exp_time}}
+    </div>
+    {% endfor %}
+    
+    
+    <hr>
+    <button><a href="static/addRule.html">Add</a></button>
+</body>
+</html>

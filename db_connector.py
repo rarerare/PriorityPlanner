@@ -1,4 +1,5 @@
 import mysql.connector
+import datetime
 DB_NAME='pq_planner'
 TASK_TBL_NAME='task'
 TASK_COLS='(name, due_date, done, estimate_sec, user_id, priority, create_date)'
@@ -18,11 +19,12 @@ def add_user(email, password):
     cnx.commit()
     cnx.close()
 
-def add_rule(descrip):
+def add_rule(rule):
     cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
-    addRule=("INSERT INTO rule (descrip) VALUES(%s)")
+    addRule=("INSERT INTO rule (rule.descrip, create_date, expire_time) VALUES(%s, %s, %s)")
     cur=cnx.cursor()
-    rule_data=(descrip,)
+    exp_t_str=(datetime.datetime.strptime(rule['exp_date']+" "+rule['exp_hr'], "%m/%d/%Y %H")).strftime('%Y-%m-%d %H:%M:%S')
+    rule_data=(rule['descrip'],datetime.datetime.now().strftime('%Y-%m-%d'), exp_t_str)
     cur.execute(addRule, rule_data)
     cnx.commit()
     cnx.close()
@@ -30,10 +32,10 @@ def add_rule(descrip):
 def get_rule():
     cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
     cur=cnx.cursor()
-    query="SELECT * FROM rule"
+    query="SELECT id, descrip, breach_cnt, create_date, expire_time FROM rule"
     cur.execute(query)
     rules=[]
-    for(id, descrip, breach_cnt) in cur:
-        rules.append({'id':id, 'descrip': descrip, 'breach_cnt':breach_cnt})
+    for(id, descrip, breach_cnt, create_date, expire_time) in cur:
+        rules.append({'id':id, 'descrip': descrip, 'breach_cnt':breach_cnt, 'create_date':create_date, 'exp_time': expire_time})
     cnx.close()
     return rules

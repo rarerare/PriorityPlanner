@@ -2,12 +2,24 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/static/js/jquery-3.3.1.js"></script>
+    <script src="/static/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="/static/js/addRule.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-ui-1.12.1.custom/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
     <title></title>
 </head>
 <body>
     <form action="/addRule" method="post">
+        Rule: 
         <textarea name="descrip">
         </textarea>
+        
+        <br>
+        Exp. Date: <input type="text" id="datepicker" name="exp_date">
+        <br>
+        Hour:<input type="number" name="exp_hr" value="0">
+        <br>
         <button type="submit">
             submit
         </button>
