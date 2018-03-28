@@ -14,10 +14,14 @@
     {% for rule in rules%}
     <div class="rule-div">
         <hr>
+        <span class="rule-descrip">
         {{rule.descrip}}<br> 
-        Created: {{rule.create_date}}
-        <br>
-        Expire: {{rule.exp_time}}
+        </span>
+        <span class="date-span">
+            Created: {{rule.create_date}}
+            <br>
+            Expire: {{rule.exp_time}}
+        </span>
     </div>
     {% endfor %}
     

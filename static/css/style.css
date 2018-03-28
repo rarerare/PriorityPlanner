@@ -1,3 +1,11 @@
 .rule-div{
-	font-size: 1.5em;
+	
+}
+.date-span{
+	color: #888888;
+	font-family: Sans-serif;
+}
+.rule-descrip{
+	font-size: 1.3em;
+	text-transform: uppercase;
 }
