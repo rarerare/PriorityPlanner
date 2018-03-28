@@ -21,7 +21,7 @@ def add_user(email, password):
 
 def add_rule(rule):
     cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
-    addRule=("INSERT INTO rule (rule.descrip, create_date, expire_time) VALUES(%s, %s, %s)")
+    addRule=("INSERT INTO rule (descrip, create_date, expire_time) VALUES(%s, %s, %s)")
     cur=cnx.cursor()
     exp_t_str=(datetime.datetime.strptime(rule['exp_date']+" "+rule['exp_hr'], "%m/%d/%Y %H")).strftime('%Y-%m-%d %H:%M:%S')
     rule_data=(rule['descrip'],datetime.datetime.now().strftime('%Y-%m-%d'), exp_t_str)
@@ -39,3 +39,24 @@ def get_rule():
         rules.append({'id':id, 'descrip': descrip, 'breach_cnt':breach_cnt, 'create_date':create_date, 'exp_time': expire_time})
     cnx.close()
     return rules
+
+def log_read(log):
+    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cur=cnx.cursor()
+    addLog="INSERT INTO read_log(title, pg_num, time_min, date) VALUES(%s, %s, %s, %s)"
+    logData=(log['title'],log['pgs'], log['minUsed'],datetime.datetime.now().strftime('%Y-%m-%d') )
+    cur.execute(addLog, logData)
+    cnx.commit()
+    cnx.close()
+
+def get_log():
+    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cur=cnx.cursor()
+    query="SELECT title, pg_num, time_min, date FROM read_log"
+    cur.execute(query)
+    logs=[]
+    for (title, pg_num, time_min, date) in cur:
+        logs.append({'title':title, 'pg_num':pg_num, 'time_min': time_min, 'date':date})
+    cnx.close()
+    return logs
+

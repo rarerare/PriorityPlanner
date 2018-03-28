@@ -14,6 +14,18 @@ def add_rule():
     dbms.add_rule(rule)
     return flask.render_template('rule.html', rules=get_rule())
 
+@app.route('/logRead', methods=['GET', 'POST'])
+def log_read():
+    if float(request.form['minUsed'])==0:
+        return flask.redirect('/readLog')
+    readLog={'title':request.form['title'], 'pgs':request.form['pgs'], 'minUsed':request.form['minUsed']}
+    dbms.log_read(readLog)
+    return flask.redirect('/readlog')
+
+@app.route('/readlog', methods=['GET', 'POST'])
+def render_read_log():
+    return flask.render_template('readLog.html', readLogs=dbms.get_log())
+
 
 def get_rule():
     return dbms.get_rule();

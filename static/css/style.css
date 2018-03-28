@@ -9,3 +9,10 @@
 	font-size: 1.3em;
 	text-transform: uppercase;
 }
+.log-table {
+	border-collapse: collapse;
+}
+
+.log-table-tr >th{
+	border: 1px solid;
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reading Log</title>
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+</head>
+<body>
+<form method="post" action="/logRead">
+    Title: <input type="text" name="title"><br>
+    Page Count: <input type="number" name="pgs" step="any" required><br>
+    Time in Minutes:<input type="number" name="minUsed" step="any" required><br>
+    <button type="submit">Log</button>
+</form>
+<br>
+<table class="log-table">
+    <tr class="log-table-tr">
+        <th>Title</th>
+        <th>Pg Count</th>
+        <th>Minutes used</th>
+        <th>Speed(pg/h)</th>
+        <th>Date</th>
+    </tr>
+    {% for log in readLogs %}
+    <tr class="log-table-tr">
+        <th>{{log.title}}</th>
+        <th>{{log.pg_num}}</th>
+        <th>{{log.time_min}}</th>
+        <th>{{60*(log.pg_num/log.time_min)}}</th>
+        <th>{{log.date}}</th>
+    </tr>
+    {% endfor %}
+
+</table>
+</body>
+</html>
