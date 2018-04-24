@@ -78,3 +78,24 @@ def get_breach_detail(rule_id):
         breach_detail.append({'id': id, 'severity':severity, 'date':date})
     cnx.close()
     return breach_detail
+
+def recordPerfect():
+    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cur=cnx.cursor()
+    query=("REPLACE INTO perfect_day(day) VALUES(%s)")
+    cur.execute(query, (datetime.datetime.now().strftime('%Y-%m-%d'),))
+    cnx.commit()
+    cnx.close()
+
+def getPerfectDays():
+    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cur=cnx.cursor()
+    query=("SELECT day FROM perfect_day")
+    cur.execute(query)
+    perfectDays=[]
+    for (day,) in cur:
+        perfectDays.append(day)
+    cnx.close()
+    return perfectDays
+
+

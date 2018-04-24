@@ -36,5 +36,12 @@ def record_breach():
     rule_id=request.form['rule_id']
     dbms.breach_rule({'rule_id':rule_id, 'severity': severity})
     return flask.render_template('breachRule.html', breach_detail=dbms.get_breach_detail(rule_id), rule_id=rule_id)
+@app.route('/recordPerfect', methods=['GET', 'POST'])
+def recordPerfect():
+    dbms.recordPerfect()
+    return flask.render_template('perfectDay.html',perfectDays=dbms.getPerfectDays())
+@app.route('/showPerfectDay', methods=['GET', 'POST'])
+def showPerfectDay():
+    return flask.render_template('perfectDay.html', perfectDays=dbms.getPerfectDays())
 def get_rule():
     return dbms.get_rule();
