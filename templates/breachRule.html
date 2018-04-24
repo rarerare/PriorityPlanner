@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+{% for breach in breach_detail%}
+{{breach.severity}} {{breach.date}}<br>
+{% endfor %}
+<br>
+<hr>
+<br>
+<form action="/recordBreach" method="post">
+   Severity:<br>
+   <input type="hidden" name="rule_id" value="{{rule_id}}">
+   <input type='radio' name='severity' value='marginal' required> marginal<br>
+    <input type='radio' name='severity' value='medium' required> medium<br>
+    <input type='radio' name='severity' value='severe' required> severe<br>
+    <input type='radio' name='severity' value='very-severe' required> very-severe<br>
+    <button type="submit">I BREACHED THIS RULE</button>
+</form>
+</body>
+</html>

@@ -25,7 +25,16 @@ def log_read():
 @app.route('/readlog', methods=['GET', 'POST'])
 def render_read_log():
     return flask.render_template('readLog.html', readLogs=dbms.get_log())
+@app.route('/openBreach', methods=['GET', 'POST'])
+def render_breach_detail():
+    rule_id=request.args.get('id')
+    return flask.render_template('breachRule.html', breach_detail=dbms.get_breach_detail(rule_id), rule_id=rule_id)
 
-
+@app.route('/recordBreach', methods=['GET', 'POST'])
+def record_breach():
+    severity=request.form['severity']
+    rule_id=request.form['rule_id']
+    dbms.breach_rule({'rule_id':rule_id, 'severity': severity})
+    return flask.render_template('breachRule.html', breach_detail=dbms.get_breach_detail(rule_id), rule_id=rule_id)
 def get_rule():
     return dbms.get_rule();

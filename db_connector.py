@@ -32,11 +32,11 @@ def add_rule(rule):
 def get_rule():
     cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
     cur=cnx.cursor()
-    query="SELECT id, descrip, breach_cnt, create_date, expire_time FROM rule"
+    query="SELECT id, descrip, create_date, expire_time FROM rule"
     cur.execute(query)
     rules=[]
-    for(id, descrip, breach_cnt, create_date, expire_time) in cur:
-        rules.append({'id':id, 'descrip': descrip, 'breach_cnt':breach_cnt, 'create_date':create_date, 'exp_time': expire_time})
+    for(id, descrip, create_date, expire_time) in cur:
+        rules.append({'id':id, 'descrip': descrip,  'create_date':create_date, 'exp_time': expire_time})
     cnx.close()
     return rules
 
@@ -59,4 +59,22 @@ def get_log():
         logs.append({'title':title, 'pg_num':pg_num, 'time_min': time_min, 'date':date})
     cnx.close()
     return logs
+def breach_rule(breach):
+    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cur=cnx.cursor()
+    recordBreach=("INSERT INTO breach( severity, date, rule_id) VALUES(%s,%s,%s)")
+    breach_data=(breach['severity'], datetime.datetime.now().strftime('%Y-%m-%d'), breach['rule_id'])
+    cur.execute(recordBreach,breach_data)
+    cnx.commit()
+    cnx.close()
 
+def get_breach_detail(rule_id):
+    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cur=cnx.cursor()
+    query=("SELECT id, severity, date FROM breach WHERE rule_id=%s")
+    cur.execute(query,(rule_id,)) 
+    breach_detail=[]
+    for (id,severity,date) in cur:
+        breach_detail.append({'id': id, 'severity':severity, 'date':date})
+    cnx.close()
+    return breach_detail
