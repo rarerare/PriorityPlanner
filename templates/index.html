@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="static/js/jquery-3.3.1.js"></script>
+    <script src="static/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="static/js/addRule.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/jquery-ui-1.12.1.custom/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <title>Add a Rule</title>
+</head>
+<body>
+    <div>
+        <h2> Tasks</h2>
+    </div>
+    <div>
+        <h2>This week's plan</h2>
+    </div>
+    {% for rule in rules%}
+    <div class="rule-div">
+        <hr>
+        <span class="rule-descrip">
+        {{rule.descrip}}<br> 
+        </span>
+        <span class="date-span">
+            Created: {{rule.create_date}}
+            <br>
+            Expire: {{rule.exp_time}}
+        </span>
+        <br>
+        <a href="/openBreach?id={{rule.id}}"> Breach Detail</a>
+    </div>
+    {% endfor %}
+    
+    
+    <hr>
+    <button><a href="static/addRule.html">Add</a></button>
+
+    <button><a href="/showPerfectDay">A perfect day today</a></button>
+</body>
+</html>
