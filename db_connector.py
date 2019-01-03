@@ -2,13 +2,13 @@ import mysql.connector
 import datetime
 DB_NAME='pq_planner'
 TASK_TBL_NAME='task'
-TASK_COLS='(name, due_date, done, estimate_sec, user_id, priority, create_date)'
-TASK_VALS='(%(name)s, %(due_date)s, %(done)s, %(estimate_sec)s, %(user_id)s, %(priority)s, %(create_date)s)'
+TASK_COLS='(descrip, due_datetime, done, priority, budget_hr, create_date, user_id)'
+TASK_VALS='(%(descrip)s, %(due_datetime)s, %(done)s, %(priority)s, %(budget_hr)s, %(create_date)s, %(user_id)s)'
 def add_task(task):
     cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
-    addVisit=("INSERT INTO "+TASK_TBL_NAME+" "+TASK_COLS+ "VALUES"+TASK_VALS)
+    addTask=("INSERT INTO "+TASK_TBL_NAME+" "+TASK_COLS+ "VALUES"+TASK_VALS)
     cur=cnx.cursor()
-    cur.execute(addVisit,task.to_json())
+    cur.execute(addTask,task.to_json())
     cnx.commit()
     cnx.close()
 def add_user(email, password):
@@ -98,4 +98,10 @@ def getPerfectDays():
     cnx.close()
     return perfectDays
 
-
+def add_week_plan():
+    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cur=cnx.cursor()
+    query=("INSERT INTO week_plan(descrip, create_date, total_hour, hour_left) VALUES(%s, %s,%s,%s)")
+    cur.execute(query, ())
+    cnx.close()
+    

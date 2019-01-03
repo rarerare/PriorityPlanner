@@ -2,6 +2,8 @@ from flask import Flask;
 import flask;
 from flask import request;
 import db_connector as dbms;
+from pq_planner import Task
+import datetime
 app = Flask(__name__)
 app.config['DEBUG'] = True
 @app.route('/', methods=['GET', 'POST'])
@@ -45,3 +47,18 @@ def showPerfectDay():
     return flask.render_template('perfectDay.html', perfectDays=dbms.getPerfectDays())
 def get_rule():
     return dbms.get_rule();
+
+@app.route('/addTask', methods=['GET', 'POST'])
+def addTask():
+    due_date=request.form['due_date']
+    if due_date!="none":
+        due_dt_str=(datetime.datetime.strptime(due_date+" "+request.form['due_hr']+":"+request.form['due_min'], "%m/%d/%Y %H:%M")).strftime('%Y-%m-%d %H:%M:%S')
+    else:
+        due_dt_str=None
+    task=Task( request.form['descrip'], due_dt_str, request.form['priority'], request.form['budget_hr'], 1)
+    dbms.add_task(task)
+    return flask.render_template('index.html', rules=get_rule())
+
+@app.route('/renderAddTaskPage', methods=['GET', 'POST'])
+def renderAddTaskPage():
+    return flask.render_template('addTask.html')
