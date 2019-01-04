@@ -1,9 +1,10 @@
 import mysql.connector
 import datetime
+from pq_planner import Task
 DB_NAME='pq_planner'
 TASK_TBL_NAME='task'
-TASK_COLS='(descrip, due_datetime, done, priority, budget_hr, create_date, user_id)'
-TASK_VALS='(%(descrip)s, %(due_datetime)s, %(done)s, %(priority)s, %(budget_hr)s, %(create_date)s, %(user_id)s)'
+TASK_COLS='(descrip, due_datetime, priority, budget_hr, create_date, user_id, hr_left)'
+TASK_VALS='(%(descrip)s, %(due_datetime)s, %(priority)s, %(budget_hr)s, %(create_date)s, %(user_id)s, %(hr_left)s)'
 def add_task(task):
     cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
     addTask=("INSERT INTO "+TASK_TBL_NAME+" "+TASK_COLS+ "VALUES"+TASK_VALS)
@@ -104,4 +105,19 @@ def add_week_plan():
     query=("INSERT INTO week_plan(descrip, create_date, total_hour, hour_left) VALUES(%s, %s,%s,%s)")
     cur.execute(query, ())
     cnx.close()
+def get_task(user_id):
+    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cur=cnx.cursor()
+    query=("SELECT descrip, due_datetime, hr_left, budget_hr, priority FROM task WHERE user_id="+str(user_id)+" and hr_left>0")
+    cur.execute(query)
+    tasks=[]
+    for (descrip, due_datetime, hr_left, budget_hr, priority) in cur:
+        t=Task(descrip, due_datetime, priority, budget_hr, user_id)
+        t.hr_left=hr_left
+        tasks.append(t)
+
+
+    cnx.close()
+    return tasks
+
     

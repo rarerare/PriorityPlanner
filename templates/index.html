@@ -7,18 +7,31 @@
     <script src="static/js/addRule.js"></script>
     <link rel="stylesheet" type="text/css" href="static/jquery-ui-1.12.1.custom/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="static/css/style.css">
-    <title>Add a Rule</title>
+    <title>Priority Planner</title>
 </head>
 <body>
+    
     <div>
-        <h2> Tasks</h2>
+        <h2>Today's plan:</h2>
     </div>
     <div>
-        <h2>This week's plan</h2>
+        <h2>This week's plan:</h2>
+    </div>
+    <div>
+        <h2> Tasks:</h2>
+        {% for task in tasks %}
+        {{task.descrip}}
+        
+        <span class="date-span">Hours still needed: {{task.hr_left}}</span>
+        
+        <span class="date-span">Due: {{task.due_datetime}}</span><br>
+        
+        {% endfor %}
     </div>
     <br>
     <button><a href="/renderAddTaskPage">Add a Task</a></button>
     <br>
+    <h2> Rules:</h2>
     {% for rule in rules%}
     <div class="rule-div">
         <hr>
@@ -37,7 +50,7 @@
     
     
     <hr>
-    <button><a href="static/addRule.html">Add</a></button>
+    <button><a href="static/addRule.html">Add a Rule</a></button>
 
     <button><a href="/showPerfectDay">A perfect day today</a></button>
 </body>

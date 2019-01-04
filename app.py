@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 @app.route('/', methods=['GET', 'POST'])
 def render_main():
-    return flask.render_template('index.html', rules=get_rule())
+    return flask.render_template('index.html', rules=get_rule(), tasks=dbms.get_task(1))
 
 @app.route('/addRule', methods=['GET', 'POST'])
 def add_rule():
