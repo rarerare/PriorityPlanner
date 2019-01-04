@@ -5,15 +5,19 @@ DB_NAME='pq_planner'
 TASK_TBL_NAME='task'
 TASK_COLS='(descrip, due_datetime, priority, budget_hr, create_date, user_id, hr_left)'
 TASK_VALS='(%(descrip)s, %(due_datetime)s, %(priority)s, %(budget_hr)s, %(create_date)s, %(user_id)s, %(hr_left)s)'
+passwordFile=open("password")
+dbPassword=passwordFile.read()
+passwordFile.close()
+
 def add_task(task):
-    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cnx = mysql.connector.connect(user='root', password=dbPassword,host='localhost',database=DB_NAME)
     addTask=("INSERT INTO "+TASK_TBL_NAME+" "+TASK_COLS+ "VALUES"+TASK_VALS)
     cur=cnx.cursor()
     cur.execute(addTask,task.to_json())
     cnx.commit()
     cnx.close()
 def add_user(email, password):
-    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cnx = mysql.connector.connect(user='root', password=dbPassword,host='localhost',database=DB_NAME)
     addUser=("INSERT INTO user(email, password) VALUES(%s,%s)")
     cur=cnx.cursor()
     cur.execute(addUser, (email,password))
@@ -21,7 +25,7 @@ def add_user(email, password):
     cnx.close()
 
 def add_rule(rule):
-    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cnx = mysql.connector.connect(user='root', password=dbPassword,host='localhost',database=DB_NAME)
     addRule=("INSERT INTO rule (descrip, create_date, expire_time) VALUES(%s, %s, %s)")
     cur=cnx.cursor()
     exp_t_str=(datetime.datetime.strptime(rule['exp_date']+" "+rule['exp_hr'], "%m/%d/%Y %H")).strftime('%Y-%m-%d %H:%M:%S')
@@ -31,7 +35,7 @@ def add_rule(rule):
     cnx.close()
 
 def get_rule():
-    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cnx = mysql.connector.connect(user='root', password=dbPassword,host='localhost',database=DB_NAME)
     cur=cnx.cursor()
     query="SELECT id, descrip, create_date, expire_time FROM rule"
     cur.execute(query)
@@ -42,7 +46,7 @@ def get_rule():
     return rules
 
 def log_read(log):
-    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cnx = mysql.connector.connect(user='root', password=dbPassword,host='localhost',database=DB_NAME)
     cur=cnx.cursor()
     addLog="INSERT INTO read_log(title, pg_num, time_min, date) VALUES(%s, %s, %s, %s)"
     logData=(log['title'],log['pgs'], log['minUsed'],datetime.datetime.now().strftime('%Y-%m-%d') )
@@ -51,7 +55,7 @@ def log_read(log):
     cnx.close()
 
 def get_log():
-    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cnx = mysql.connector.connect(user='root', password=dbPassword,host='localhost',database=DB_NAME)
     cur=cnx.cursor()
     query="SELECT title, pg_num, time_min, date FROM read_log"
     cur.execute(query)
@@ -61,7 +65,7 @@ def get_log():
     cnx.close()
     return logs
 def breach_rule(breach):
-    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cnx = mysql.connector.connect(user='root', password=dbPassword,host='localhost',database=DB_NAME)
     cur=cnx.cursor()
     recordBreach=("INSERT INTO breach( severity, date, rule_id) VALUES(%s,%s,%s)")
     breach_data=(breach['severity'], datetime.datetime.now().strftime('%Y-%m-%d'), breach['rule_id'])
@@ -70,7 +74,7 @@ def breach_rule(breach):
     cnx.close()
 
 def get_breach_detail(rule_id):
-    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cnx = mysql.connector.connect(user='root', password=dbPassword,host='localhost',database=DB_NAME)
     cur=cnx.cursor()
     query=("SELECT id, severity, date FROM breach WHERE rule_id=%s")
     cur.execute(query,(rule_id,)) 
@@ -81,7 +85,7 @@ def get_breach_detail(rule_id):
     return breach_detail
 
 def recordPerfect():
-    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cnx = mysql.connector.connect(user='root', password=dbPassword,host='localhost',database=DB_NAME)
     cur=cnx.cursor()
     query=("REPLACE INTO perfect_day(day) VALUES(%s)")
     cur.execute(query, (datetime.datetime.now().strftime('%Y-%m-%d'),))
@@ -89,7 +93,7 @@ def recordPerfect():
     cnx.close()
 
 def getPerfectDays():
-    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cnx = mysql.connector.connect(user='root', password=dbPassword,host='localhost',database=DB_NAME)
     cur=cnx.cursor()
     query=("SELECT day FROM perfect_day")
     cur.execute(query)
@@ -100,13 +104,13 @@ def getPerfectDays():
     return perfectDays
 
 def add_week_plan():
-    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cnx = mysql.connector.connect(user='root', password=dbPassword,host='localhost',database=DB_NAME)
     cur=cnx.cursor()
     query=("INSERT INTO week_plan(descrip, create_date, total_hour, hour_left) VALUES(%s, %s,%s,%s)")
     cur.execute(query, ())
     cnx.close()
 def get_task(user_id):
-    cnx = mysql.connector.connect(user='root', password='drwssp',host='localhost',database=DB_NAME)
+    cnx = mysql.connector.connect(user='root', password=dbPassword,host='localhost',database=DB_NAME)
     cur=cnx.cursor()
     query=("SELECT descrip, due_datetime, hr_left, budget_hr, priority FROM task WHERE user_id="+str(user_id)+" and hr_left>0")
     cur.execute(query)
